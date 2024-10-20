@@ -11,11 +11,11 @@ pipeline {
                 echo 'Running tests...' // Add test commands if needed
             }
         }
-       stage('Deploy') {
+    stage('Deploy') {
     steps {
         echo 'Deploying application...'
         // Kill any existing instance of the application
-        sh 'sudo pkill -f node || true'
+        sh 'echo "your_sudo_password" | sudo -S pkill -f node || true'
         // Start the application in the background and log output
         sh 'nohup node app.js > app.log 2>&1 &'
             }
