@@ -11,11 +11,13 @@ pipeline {
                 echo 'Running tests...' // Add test commands if needed
             }
         }
-        stage('Deploy') {
-            steps {
-                echo 'Deploying application...'
-                sh 'pkill -f node || true' // Kill any running instance of the app
-                sh 'nohup node app.js > app.log 2>&1 &' // Start the app in the background
+       stage('Deploy') {
+    steps {
+        echo 'Deploying application...'
+        // Kill any existing instance of the application
+        sh 'sudo pkill -f node || true'
+        // Start the application in the background and log output
+        sh 'nohup node app.js > app.log 2>&1 &'
             }
         }
     }
