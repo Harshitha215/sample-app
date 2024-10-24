@@ -14,7 +14,7 @@ pipeline {
         stage('Build') {
             steps {
                 script {
-                    echo 'Installing dependencies...'
+                    echo 'Installing dependencies... HI HARSHA'
                     sh 'npm install'
                 }
             }
