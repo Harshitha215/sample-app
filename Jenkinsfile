@@ -1,34 +1,70 @@
 pipeline {
-    agent any
+    agent any 
+
     stages {
+        stage('Checkout') {
+            steps {
+                script {
+                    // Checkout code from Git repository
+                    checkout scm
+                }
+            }
+        }
+
         stage('Build') {
             steps {
                 script {
+                    echo 'Installing dependencies...'
                     sh 'npm install'
                 }
             }
         }
+
         stage('Test') {
             steps {
                 script {
                     echo 'Running tests...'
-                    // Add test commands here
+                    // Add your test command here
+                    // e.g., sh 'npm test'
                 }
             }
         }
+
         stage('Deploy') {
-    steps {
-        script {
-            sh '''
-            # Kill any existing instance of the app running on port 3000
-            if lsof -i :3000; then
-                kill -9 $(lsof -t -i :3000)
-            fi
-            echo "Deploying application..."
-            node app.js &
-            '''
+            steps {
+                script {
+                    echo 'Checking if the application is already running...'
+                    def isRunning = sh(script: "lsof -i :3000 | grep LISTEN", returnStatus: true) == 0
+
+                    if (isRunning) {
+                        echo 'Application is already running. Restarting...'
+                        // Kill the existing application
+                        sh 'pkill -f "node app.js"'
+                    } else {
+                        echo 'No existing application found. Deploying...'
+                    }
+
+                    // Start the application
+                    sh 'nohup node app.js > app.log 2>&1 &'
+                    echo 'Application deployed and running!'
+                }
+            }
+        }
+    }
+
+    post {
+        always {
+            echo 'Cleaning up...'
+            // Optional: Clean up actions (like removing temp files)
+        }
+
+        success {
+            echo 'Pipeline completed successfully!'
+        }
+
+        failure {
+            echo 'Pipeline failed. Please check the logs.'
         }
     }
 }
-
 
