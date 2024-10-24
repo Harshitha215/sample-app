@@ -2,7 +2,7 @@ pipeline {
     agent any 
 
     stages {
-        stage('Checkout') {
+        stage('Harshitha') {
             steps {
                 script {
                     // Checkout code from Git repository
