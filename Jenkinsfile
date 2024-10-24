@@ -12,6 +12,7 @@ pipeline {
             steps {
                 script {
                     echo 'Running tests...'
+                    // Add any test commands here
                 }
             }
         }
@@ -19,10 +20,14 @@ pipeline {
             steps {
                 script {
                     echo 'Deploying application...'
-                    sh 'node app.js &'
+                    // Run the application in the background and log output
+                    sh 'nohup node app.js > app.log 2>&1 &'
                 }
             }
         }
     }
 }
+app.listen(port, () => {
+    console.log(`App running at http://localhost:${port}`);
+});
 
