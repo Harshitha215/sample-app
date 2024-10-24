@@ -17,12 +17,16 @@ pipeline {
             }
         }
         stage('Deploy') {
-            steps {
-                script {
-                    echo 'Deploying application...'
-                    sh 'node app.js &'
-                }
-            }
+    steps {
+        script {
+            sh '''
+            # Kill any existing instance of the app running on port 3000
+            if lsof -i :3000; then
+                kill -9 $(lsof -t -i :3000)
+            fi
+            echo "Deploying application..."
+            node app.js &
+            '''
         }
     }
 }
