@@ -13,14 +13,16 @@ app.get('/', (req, res) => {
 
 // Route to handle GitHub webhook
 app.post('/webhook', (req, res) => {
-    console.log('Webhook received'); // Log when a webhook is received
-    console.log('Webhook payload:', JSON.stringify(req.body, null, 2)); // Log the payload
+    // Log the webhook payload
+    console.log('Webhook received:', req.body);
+    
+    // Log a specific message
+    console.log('Webhook hit!');
 
     // Respond with a 200 OK status
     res.status(200).send('Webhook received');
 });
 
-// Start the server
 app.listen(port, () => {
     console.log(`App running at http://localhost:${port}`);
 });
